@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ROLES = require("../config/roleEnum");
 
 const adminSchema = new mongoose.Schema({
   name: {
@@ -22,6 +23,11 @@ const adminSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true,
+  },
+  roles: {
+    type: String,
+    enum: Object.values(ROLES),
+    default: ROLES.ADMIN,
   },
   createdAt: {
     type: Date,

@@ -24,9 +24,9 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   roles: {
-    type: [String],
+    type: String,
     enum: Object.values(ROLES),
-    default: [ROLES.USER],
+    default: ROLES.USER,
   },
   pin: {
     type: String,
