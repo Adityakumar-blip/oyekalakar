@@ -6,11 +6,11 @@ const artistRoutes = express.Router();
 artistRoutes.post("/create", artistController.registerArtist);
 artistRoutes.post("/login", artistController.loginArtist);
 artistRoutes.get(
-  "/getUserById",
+  "/getArtitst",
   authenticateToken,
   artistController.getArtistById
 );
-artistRoutes.put(
+artistRoutes.patch(
   "/update",
   authenticateToken,
   artistController.updateArtistProfile

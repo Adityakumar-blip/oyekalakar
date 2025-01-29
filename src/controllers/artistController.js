@@ -84,7 +84,7 @@ const loginArtist = async (req, res) => {
 
 const getArtistById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
 
     const artist = await Artist.findById(id);
 
@@ -99,28 +99,24 @@ const getArtistById = async (req, res) => {
 };
 
 const updateArtistProfile = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = [
-    "sellerName",
-    "shopName",
-    "contactNumber",
-    "address",
-    "additionalInfo",
-  ];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
-
-  if (!isValidOperation) {
-    return sendError(res, "Invalid updates");
-  }
-
   try {
-    updates.forEach((update) => (req.seller[update] = req.body[update]));
-    await req.seller.save();
-    sendSuccess(res, "Profile updated successfully", req.seller);
+    const { id } = req.query;
+    const artist = await Artist.findById(id);
+
+    if (!artist) {
+      return sendError(res, "Artist not found", 404);
+    }
+
+    // Update with the request body
+    Object.assign(artist, req.body);
+    const updatedSeller = await artist.save();
+
+    return sendSuccess(res, "Profile updated successfully", updatedSeller);
   } catch (error) {
-    sendError(res, "Failed to update profile", error);
+    if (error.name === "CastError") {
+      return sendError(res, "Invalid ID format");
+    }
+    return sendError(res, "Failed to update profile", error);
   }
 };
 

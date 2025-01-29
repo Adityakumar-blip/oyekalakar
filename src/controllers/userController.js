@@ -1,10 +1,14 @@
 const User = require("../models/userSchema.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
 const { sendSuccess, sendError } = require("../utils/responseService.js");
 const { createUserSchema } = require("../utils/schema/createUserSchema.js");
 
 // Create a new user
 exports.createUser = async (req, res) => {
   try {
+    // Validate request body
     const { error } = createUserSchema.validate(req.body, {
       abortEarly: false,
     });
@@ -20,19 +24,62 @@ exports.createUser = async (req, res) => {
 
     const { name, email, phoneNumber, password, address, pin } = req.body;
 
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return sendError(res, "Email already registered", null, 409);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
     const newUser = new User({
       name,
       email,
       phoneNumber,
-      password,
+      password: hashedPassword,
       address,
       pin,
     });
 
     const savedUser = await newUser.save();
-    sendSuccess(res, "User created successfully", savedUser, 201);
+
+    // Remove password from response
+    const userResponse = savedUser.toObject();
+    delete userResponse.password;
+
+    sendSuccess(res, "User created successfully", userResponse, 201);
   } catch (err) {
-    sendError(res, "Failed to create user", err, 400);
+    console.error("User creation error:", err);
+    sendError(res, "Failed to create user", err, 500);
+  }
+};
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      return sendError(res, "User not found.");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return sendError(res, "Invalid credentials.");
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    const userObject = user.toObject();
+    delete userObject.password;
+
+    sendSuccess(res, "Login successful", { data: userObject, token });
+  } catch (err) {
+    console.error(err);
+    sendError(res, "Internal Server Error.", err);
   }
 };
 

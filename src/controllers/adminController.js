@@ -17,13 +17,17 @@ exports.getAllArtists = async (req, res, next) => {
 
 exports.updateArtist = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id, status } = req.body;
     const updateData = req.body;
 
-    const updatedArtist = await Artist.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedArtist = await Artist.findByIdAndUpdate(
+      id,
+      { status },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!updatedArtist) {
       return sendError(res, "Artist not found", null, 404);
@@ -46,13 +50,18 @@ exports.getAllSellers = async (req, res, next) => {
 
 exports.updateSeller = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id, status } = req.body;
     const updateData = req.body;
+    console.log("request", req.body);
 
-    const updatedSeller = await Sellers.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedSeller = await Sellers.findByIdAndUpdate(
+      id,
+      { status },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!updatedSeller) {
       return sendError(res, "seller not found", null, 404);

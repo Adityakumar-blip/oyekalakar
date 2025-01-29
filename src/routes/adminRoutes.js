@@ -17,7 +17,12 @@ adminRoutes.get(
   requireAdmin,
   adminController.getAllSellers
 );
-adminRoutes.get("/getAllArtists", requireAdmin, adminController.getAllArtists);
+adminRoutes.get(
+  "/getAllArtists",
+  authenticateToken,
+  requireAdmin,
+  adminController.getAllArtists
+);
 adminRoutes.get(
   "/getAllUsers",
   authenticateToken,

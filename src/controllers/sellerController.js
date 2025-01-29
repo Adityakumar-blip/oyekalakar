@@ -79,7 +79,10 @@ const loginSeller = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    sendSuccess(res, "Login successful", { seller, token });
+    const newObj = seller.toObject();
+    delete newObj.password;
+
+    sendSuccess(res, "Login successful", { data: newObj, token });
   } catch (error) {
     sendError(res, "Login failed", error);
   }
@@ -88,7 +91,7 @@ const loginSeller = async (req, res) => {
 // Get seller profile
 const getSellerProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
 
     const seller = await Seller.findById(id);
 
@@ -96,7 +99,10 @@ const getSellerProfile = async (req, res) => {
       return sendError(res, "seller not found", null, 404);
     }
 
-    sendSuccess(res, "seller profile retrieved successfully", seller);
+    const newSellerObj = seller.toObject();
+    delete newSellerObj.password;
+
+    sendSuccess(res, "seller profile retrieved successfully", newSellerObj);
   } catch (error) {
     sendError(res, "Failed to retrieve seller profile", error, 500);
   }
