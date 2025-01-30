@@ -87,10 +87,10 @@ exports.forgotPassword = async (req, res) => {
       expiresIn: "10m",
     });
 
-    const emailResponse = await sendEmailOTP({
-      to: email,
+    const emailResponse = await sendEmailOTP.sendEmail({
+      userEmail: email,
       subject: "Your OTP for Password Reset",
-      otp,
+      content: `<p>Your OTP is <strong>${otp}</strong>.</p><p>It is valid for 10 minutes.</p>`,
     });
 
     if (!emailResponse.success) {
@@ -105,7 +105,7 @@ exports.forgotPassword = async (req, res) => {
 
     console.log("email response: " + emailResponse);
 
-    sendSuccess(res, "OTP sent successfully.", { token });
+    sendSuccess(res, "OTP sent successfully.", { token, otp });
   } catch (err) {
     console.error(err);
     sendError(res, "Internal Server Error.", err);

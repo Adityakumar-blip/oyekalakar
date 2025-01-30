@@ -13,5 +13,6 @@ router.use("/category", require("./productTypeRoutes.js"));
 router.use("/product", require("./productRoutes.js"));
 router.use("/cart", require("./cartRoutes.js"));
 router.use("/order", require("./orderRoutes.js"));
+router.use("/wallet", require("./walletRoutes.js"));
 
 module.exports = router;

@@ -18,5 +18,15 @@ orderRoutes.patch(
   authenticateToken,
   orderItem.updateOrderStatus
 );
+orderRoutes.post(
+  "/initiatePayment",
+  authenticateToken,
+  orderItem.initiatePayment
+);
+orderRoutes.post(
+  "/completePayment",
+  authenticateToken,
+  orderItem.completePayment
+);
 
 module.exports = orderRoutes;

@@ -10,10 +10,10 @@ exports.createProduct = async (req, res) => {
       price,
       stock,
       category,
-      seller,
       tags,
       isPersonalizable,
       personalizationOptions,
+      productSeller,
     } = req.body;
 
     const images = req.files
@@ -29,11 +29,12 @@ exports.createProduct = async (req, res) => {
       price,
       stock,
       category,
-      seller,
       images,
       tags,
       isPersonalizable,
       personalizationOptions,
+      productSeller,
+      roles: req.user.roles,
     });
 
     await product.save();
@@ -96,7 +97,40 @@ exports.getProductById = async (req, res) => {
 // Update product details
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    const { status, ...otherFields } = req.body;
+
+    console.log("product", req);
+
+    if (status !== undefined) {
+      if (req.user.roles !== "Admin") {
+        return sendError(
+          res,
+          "Only admin can update product status",
+          null,
+          403
+        );
+      }
+    }
+
+    if (req.user.roles === "Seller" || req.user.roles === "Artist") {
+      const existingProduct = await Product.findById(req.query.id);
+      if (!existingProduct) {
+        return sendError(res, "Product not found", null, 404);
+      }
+
+      if (existingProduct.userId.toString() !== req.user.id) {
+        return sendError(
+          res,
+          "You can only update your own products",
+          null,
+          403
+        );
+      }
+    }
+
+    const updateData = req.user.roles === "Admin" ? req.body : otherFields;
+
+    const product = await Product.findByIdAndUpdate(req.query.id, updateData, {
       new: true,
     });
 

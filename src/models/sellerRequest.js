@@ -36,6 +36,7 @@ const sellerRequestSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  
   status: {
     type: String,
     enum: Object.values(STATUS),

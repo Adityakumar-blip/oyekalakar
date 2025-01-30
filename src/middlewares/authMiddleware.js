@@ -20,7 +20,7 @@ const authenticateToken = (req, res, next) => {
 
 const requireAdmin = (req, res, next) => {
   console.log("requireAdmin", req.user);
-  if (!req.user || req.user.roles !== "admin") {
+  if (!req.user || req.user.roles !== "Admin") {
     return res.status(403).json({ message: "Admin access required" });
   }
   next();

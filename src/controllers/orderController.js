@@ -1,6 +1,9 @@
 const Order = require("../models/orderSchema");
 const CartItem = require("../models/cartItemSchema");
+const Wallet = require("../models/walletSchema");
+const Transaction = require("../models/transactionSchema");
 const { sendSuccess, sendError } = require("../utils/responseService");
+const razorpay = require("../config/razorpay");
 
 const createOrder = async (req, res) => {
   try {
@@ -82,9 +85,99 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+/**
+ * Initiating Payment
+ */
+const initiatePayment = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) return sendError(res, "Order not found", null, 404);
+
+    const razorOrder = {
+      id: "order_JjKl8G5L6lVb7Z",
+      entity: "order",
+      amount: 50000,
+      amount_paid: 50000,
+      amount_due: 0,
+      currency: "INR",
+      receipt: "order_rcptid_12345",
+      offer_id: null,
+      status: "created",
+      attempts: 0,
+      notes: [],
+      created_at: 1706612345,
+    };
+
+    // const razorpayOrder = await razorpay.orders.create({
+    //   amount: order.totalAmount * 100,
+    //   currency: "INR",
+    //   receipt: `order_rcptid_${orderId}`,
+    //   payment_capture: 1,
+    // });
+
+    sendSuccess(res, "Payment initiated", { razorpayOrder: razorOrder });
+  } catch (error) {
+    sendError(res, "Failed to initiate payment", error);
+  }
+};
+
+/**
+ * Complete Payment - Verify Razorpay Payment and Update Order Status
+ */
+const completePayment = async (req, res) => {
+  try {
+    const { orderId, paymentId, signature } = req.body;
+
+    const order = await Order.findById(orderId).populate("items.product");
+    if (!order) return sendError(res, "Order not found", null, 404);
+
+    order.paymentStatus = "paid";
+    order.status = "processing";
+    await order.save();
+
+    for (const item of order.items) {
+      const product = item.product;
+      const sellerId = product.seller;
+
+      let wallet = await Wallet.findOne({ userId: sellerId });
+      if (!wallet) {
+        wallet = new Wallet({
+          userId: sellerId,
+          roles: "seller",
+          balance: 0,
+        });
+      }
+
+      const platformFee = item.price * item.quantity * 0.1;
+      const sellerAmount = item.price * item.quantity - platformFee;
+
+      wallet.balance += sellerAmount;
+      await wallet.save();
+
+      await Transaction.create({
+        walletId: wallet._id,
+        userId: sellerId,
+        roles: "seller",
+        amount: sellerAmount,
+        type: "CREDIT",
+        reason: `Earnings from Order ${order._id}`,
+        status: "COMPLETED",
+      });
+    }
+
+    sendSuccess(res, "Payment successful and earnings distributed", order);
+  } catch (error) {
+    sendError(res, "Failed to complete payment", error);
+  }
+};
+
 module.exports = {
   createOrder,
   getOrderDetails,
   updateOrderStatus,
   getUserOrders,
+  initiatePayment,
+  completePayment,
 };

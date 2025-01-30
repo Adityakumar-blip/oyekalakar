@@ -29,4 +29,40 @@ const sendEmailOTP = async ({ to, subject, otp }) => {
   }
 };
 
-module.exports = sendEmailOTP;
+const sendEmail = async ({ userEmail, subject, content }) => {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: process.env.SENDGRID_HOST,
+      port: process.env.SENDGRID_PORT,
+      auth: {
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.SENDGRID_SECRET_KEY,
+      },
+    });
+
+    let payload = {
+      from: process.env.SENDER_EMAIL,
+      to: userEmail,
+      subject: subject,
+      html: content,
+    };
+
+    // if (rest.length > 0) {
+    //   payload["attachments"] = rest[0];
+    // }
+
+    const response = await transporter.sendMail(payload);
+
+    if (response) {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.log("Getting error while send email:", err);
+    // logger.error(`Getting error while send email : ${err}`);
+
+    return false;
+  }
+};
+
+module.exports = { sendEmailOTP, sendEmail };

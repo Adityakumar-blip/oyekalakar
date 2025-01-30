@@ -10,7 +10,6 @@ const productRoutes = express.Router();
 productRoutes.post(
   "/create",
   authenticateToken,
-  requireAdmin,
   upload.array("images", 5),
 
   product.createProduct
@@ -20,7 +19,7 @@ productRoutes.get("/get", product.getProducts);
 productRoutes.get("/getById", product.getProductById);
 productRoutes.get("/getTopProducts", product.getTopRatedProducts);
 productRoutes.get("/getProductAnalytics", product.getProductAnalytics);
-productRoutes.patch("/updateProduct", product.updateProduct);
+productRoutes.patch("/updateProduct", authenticateToken, product.updateProduct);
 productRoutes.delete("/delete", product.deleteProduct);
 
 module.exports = productRoutes;

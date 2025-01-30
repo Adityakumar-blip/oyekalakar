@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const ProductType = require("../config/productTypeEnum");
+const ROLES = require("../config/roleEnum");
+const STATUS = require("../config/statusEnum");
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -10,6 +13,11 @@ const ProductSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    productType: {
+      type: String,
+      enum: Object.values(ProductType),
+      default: ProductType.BuyNow,
     },
     price: {
       type: Number,
@@ -29,10 +37,20 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    seller: {
+    productSeller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Seller",
+      refPath: "roles",
       required: true,
+    },
+    roles: {
+      type: String,
+      enum: Object.values(ROLES),
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: Object.values(STATUS),
+      default: STATUS.PENDING,
     },
     images: [
       {
