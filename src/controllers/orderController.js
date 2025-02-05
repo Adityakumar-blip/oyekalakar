@@ -95,29 +95,14 @@ const initiatePayment = async (req, res) => {
     const order = await Order.findById(orderId);
     if (!order) return sendError(res, "Order not found", null, 404);
 
-    const razorOrder = {
-      id: "order_JjKl8G5L6lVb7Z",
-      entity: "order",
-      amount: 50000,
-      amount_paid: 50000,
-      amount_due: 0,
+    const razorpayOrder = await razorpay.orders.create({
+      amount: order.totalAmount * 100,
       currency: "INR",
-      receipt: "order_rcptid_12345",
-      offer_id: null,
-      status: "created",
-      attempts: 0,
-      notes: [],
-      created_at: 1706612345,
-    };
+      receipt: `order_rcptid_${orderId}`,
+      payment_capture: 1,
+    });
 
-    // const razorpayOrder = await razorpay.orders.create({
-    //   amount: order.totalAmount * 100,
-    //   currency: "INR",
-    //   receipt: `order_rcptid_${orderId}`,
-    //   payment_capture: 1,
-    // });
-
-    sendSuccess(res, "Payment initiated", { razorpayOrder: razorOrder });
+    sendSuccess(res, "Payment initiated", { razorpayOrder: razorpayOrder });
   } catch (error) {
     sendError(res, "Failed to initiate payment", error);
   }
@@ -138,14 +123,15 @@ const completePayment = async (req, res) => {
     await order.save();
 
     for (const item of order.items) {
+      console.log("item product", item.product);
       const product = item.product;
-      const sellerId = product.seller;
+      const sellerId = product.productSeller;
 
       let wallet = await Wallet.findOne({ userId: sellerId });
       if (!wallet) {
         wallet = new Wallet({
           userId: sellerId,
-          roles: "seller",
+          roles: product.roles,
           balance: 0,
         });
       }
@@ -159,7 +145,7 @@ const completePayment = async (req, res) => {
       await Transaction.create({
         walletId: wallet._id,
         userId: sellerId,
-        roles: "seller",
+        roles: product.roles,
         amount: sellerAmount,
         type: "CREDIT",
         reason: `Earnings from Order ${order._id}`,
