@@ -9,12 +9,14 @@ const couponSchema = new mongoose.Schema(
       required: true,
     },
     discountValue: { type: Number, required: true },
-    expirationDate: { type: Date, required: true },
+    expirationDate: { type: Date },
     isActive: { type: Boolean, default: true },
     usageLimit: { type: Number, default: null },
     usedCount: { type: Number, default: 0 },
     minOrderAmount: { type: Number, default: 0 },
     maxDiscount: { type: Number, default: null },
+    creatorRole: { type: String },
+    creatorId: { type: String },
   },
   { timestamps: true }
 );

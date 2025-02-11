@@ -6,7 +6,10 @@ const addressSchema = new mongoose.Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   country: { type: String, required: true },
-  pin: { type: String, required: true },
+  pincode: { type: String, required: true },
+  latitude: { type: String, required: true },
+  longitude: { type: String, required: true },
+  type: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Address", addressSchema);

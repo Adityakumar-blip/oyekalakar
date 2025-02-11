@@ -5,7 +5,8 @@ exports.validatePincode = async (country, pin) => {
     const response = await axios.get(
       `https://api.zippopotam.us/${country}/${pin}`
     );
-    return !!response.data;
+
+    return response.data;
   } catch (error) {
     return false;
   }

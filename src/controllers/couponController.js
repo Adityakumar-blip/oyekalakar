@@ -39,6 +39,8 @@ const createCoupon = async (req, res) => {
       usageLimit,
       minOrderAmount,
       maxDiscount,
+      creatorRole: req.user.roles,
+      creatorId: req.user.id,
     });
     await coupon.save();
 
@@ -111,12 +113,22 @@ const getAllCoupons = async (req, res) => {
   }
 };
 
+const getCouponsByCreator = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const coupons = await Coupon.find({ creatorId: userId });
+    return sendSuccess(res, "Coupons retrieved successfully", coupons);
+  } catch (error) {
+    return sendError(res, "Failed to fetch coupons", error, 500);
+  }
+};
+
 /**
  * Get a single coupon by ID
  */
 const getCouponById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const coupon = await Coupon.findById(id);
 
     if (!coupon) {
@@ -134,18 +146,30 @@ const getCouponById = async (req, res) => {
  */
 const updateCoupon = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { code, discount, expirationDate, isActive, usageLimit } = req.body;
+    const userId = req.user.id;
+    const { code, discount, expirationDate, isActive, usageLimit, id } =
+      req.body;
+
+    const coupon = await Coupon.findById(id);
+
+    if (!coupon) {
+      return sendError(res, "Coupon not found", null, 404);
+    }
+
+    if (coupon.creatorId.toString() !== userId) {
+      return sendError(
+        res,
+        "You are not authorized to update this coupon",
+        null,
+        403
+      );
+    }
 
     const updatedCoupon = await Coupon.findByIdAndUpdate(
       id,
       { code, discount, expirationDate, isActive, usageLimit },
       { new: true, runValidators: true }
     );
-
-    if (!updatedCoupon) {
-      return sendError(res, "Coupon not found", null, 404);
-    }
 
     return sendSuccess(res, "Coupon updated successfully", updatedCoupon);
   } catch (error) {
@@ -158,7 +182,7 @@ const updateCoupon = async (req, res) => {
  */
 const deleteCoupon = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const deletedCoupon = await Coupon.findByIdAndDelete(id);
 
     if (!deletedCoupon) {
@@ -178,4 +202,5 @@ module.exports = {
   deleteCoupon,
   updateCoupon,
   getCouponById,
+  getCouponsByCreator,
 };

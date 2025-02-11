@@ -1,9 +1,120 @@
 const User = require("../models/userSchema.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const otpGenerator = require("otp-generator");
+const crypto = require("crypto");
 
 const { sendSuccess, sendError } = require("../utils/responseService.js");
 const { createUserSchema } = require("../utils/schema/createUserSchema.js");
+
+function generateOTP(length = 6) {
+  const otp = crypto.randomInt(10 ** (length - 1), 10 ** length);
+  return otp.toString();
+}
+
+exports.sendOtp = async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+
+    if (!phoneNumber) {
+      return sendError(res, "Phone number is required", null, 400);
+    }
+
+    // Generate a 6-digit OTP
+    const otp = generateOTP();
+
+    // Store OTP in a JWT (valid for 5 mins)
+    const otpToken = jwt.sign({ phoneNumber, otp }, process.env.JWT_SECRET, {
+      expiresIn: "5m",
+    });
+
+    // Send OTP via SMS
+    // const smsSent = await this.sendOtp(phoneNumber, otp);
+    // if (!smsSent) {
+    //   return sendError(res, "Failed to send OTP", null, 500);
+    // }
+
+    sendSuccess(res, "OTP sent successfully", { otpToken, otp }, 200);
+  } catch (err) {
+    console.error("OTP send error:", err);
+    sendError(res, "Failed to send OTP", err, 500);
+  }
+};
+
+exports.verifyOtpAndLogin = async (req, res) => {
+  try {
+    const { phoneNumber, otp, otpToken } = req.body;
+
+    if (!phoneNumber || !otp || !otpToken) {
+      return sendError(res, "Missing required fields", null, 400);
+    }
+
+    // Verify OTP token
+    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
+    if (
+      !decoded ||
+      decoded.phoneNumber !== phoneNumber ||
+      decoded.otp !== otp
+    ) {
+      return sendError(res, "Invalid or expired OTP", null, 400);
+    }
+
+    // Check if user already exists
+    let user = await User.findOne({ phoneNumber });
+
+    if (!user) {
+      // Create new user with just phoneNumber
+      user = new User({ phoneNumber, email: "" });
+      await user.save();
+    }
+
+    // Generate JWT token for user login
+    const token = jwt.sign(
+      { id: user._id, phoneNumber: user.phoneNumber },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    sendSuccess(res, "OTP verified & user logged in", { user, token }, 200);
+  } catch (err) {
+    console.error("OTP verification error:", err);
+    sendError(res, "Invalid or expired OTP", err, 400);
+  }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const { name, email, password } = req.body;
+
+    if (!name && !email && !password) {
+      return sendError(res, "Provide at least one field to update", null, 400);
+    }
+
+    let updates = {};
+    if (name) updates.name = name;
+    if (email) {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return sendError(res, "Invalid email format", null, 400);
+      }
+      updates.email = email;
+    }
+    if (password) {
+      updates.password = await bcrypt.hash(password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
+
+    sendSuccess(res, "User details updated", updatedUser, 200);
+  } catch (err) {
+    console.error("User update error:", err);
+    sendError(res, "Failed to update user", err, 500);
+  }
+};
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -22,7 +133,7 @@ exports.createUser = async (req, res) => {
       );
     }
 
-    const { name, email, phoneNumber, password, address, pin } = req.body;
+    const { name, email, phoneNumber, password, pin } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -38,7 +149,6 @@ exports.createUser = async (req, res) => {
       email,
       phoneNumber,
       password: hashedPassword,
-      address,
       pin,
     });
 

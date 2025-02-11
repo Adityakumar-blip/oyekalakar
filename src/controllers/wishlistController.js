@@ -6,7 +6,8 @@ const { sendSuccess, sendError } = require("../utils/responseService");
  */
 const addToWishlist = async (req, res) => {
   try {
-    const { userId, productId } = req.body;
+    const userId = req.user.id;
+    const { productId } = req.body;
 
     const existingWishlist = await Wishlist.findOne({ userId, productId });
     if (existingWishlist) {
@@ -27,7 +28,7 @@ const addToWishlist = async (req, res) => {
  */
 const getWishlistByUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const wishlist = await Wishlist.find({ userId }).populate("productId");
 
     return sendSuccess(res, "Wishlist retrieved successfully", wishlist);
@@ -41,7 +42,8 @@ const getWishlistByUser = async (req, res) => {
  */
 const removeFromWishlist = async (req, res) => {
   try {
-    const { userId, productId } = req.body;
+    const userId = req.user.id;
+    const { productId } = req.body;
 
     const deletedItem = await Wishlist.findOneAndDelete({ userId, productId });
 
