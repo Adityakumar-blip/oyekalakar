@@ -1,0 +1,309 @@
+{
+  "info": {
+    "name": "API Documentation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "POST /api/address/add",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/address/add"
+      }
+    },
+    {
+      "name": "PATCH /api/address/edit",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/address/edit"
+      }
+    },
+    {
+      "name": "GET /api/address/verifyPincode",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/address/verifyPincode"
+      }
+    },
+    {
+      "name": "POST /api/admin/signup",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/admin/signup"
+      }
+    },
+    {
+      "name": "POST /api/admin/login",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/admin/login"
+      }
+    },
+    {
+      "name": "POST /api/admin/forgotPassword",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/admin/forgotPassword"
+      }
+    },
+    {
+      "name": "PATCH /api/admin/resetPassword",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/admin/resetPassword"
+      }
+    },
+    {
+      "name": "POST /api/artist/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/artist/create"
+      }
+    },
+    {
+      "name": "POST /api/artist/login",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/artist/login"
+      }
+    },
+    {
+      "name": "POST /api/cart/add",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/cart/add"
+      }
+    },
+    {
+      "name": "GET /api/cart/getItem",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cart/getItem"
+      }
+    },
+    {
+      "name": "PATCH /api/cart/updateCart",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/cart/updateCart"
+      }
+    },
+    {
+      "name": "DELETE /api/cart/remove",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/cart/remove"
+      }
+    },
+    {
+      "name": "POST /api/coupon/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/coupon/create"
+      }
+    },
+    {
+      "name": "GET /api/coupon/getAllCoupons",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/coupon/getAllCoupons"
+      }
+    },
+    {
+      "name": "GET /api/coupon/getById",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/coupon/getById"
+      }
+    },
+    {
+      "name": "PATCH /api/coupon/update",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/coupon/update"
+      }
+    },
+    {
+      "name": "GET /api/index.js",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/index.js"
+      }
+    },
+    {
+      "name": "POST /api/order/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/order/create"
+      }
+    },
+    {
+      "name": "GET /api/order/get",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/order/get"
+      }
+    },
+    {
+      "name": "POST /api/product/addReview",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/product/addReview"
+      }
+    },
+    {
+      "name": "GET /api/product/get",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/product/get"
+      }
+    },
+    {
+      "name": "GET /api/product/getById",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/product/getById"
+      }
+    },
+    {
+      "name": "GET /api/product/getTopProducts",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/product/getTopProducts"
+      }
+    },
+    {
+      "name": "GET /api/product/getProductAnalytics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/product/getProductAnalytics"
+      }
+    },
+    {
+      "name": "PATCH /api/product/updateProduct",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/product/updateProduct"
+      }
+    },
+    {
+      "name": "DELETE /api/product/delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/product/delete"
+      }
+    },
+    {
+      "name": "POST /api/seller/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/seller/create"
+      }
+    },
+    {
+      "name": "GET /api/seller/get",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/seller/get"
+      }
+    },
+    {
+      "name": "POST /api/seller/login",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/seller/login"
+      }
+    },
+    {
+      "name": "GET /api/seller/getUserById",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/seller/getUserById"
+      }
+    },
+    {
+      "name": "PUT /api/seller/update",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/seller/update"
+      }
+    },
+    {
+      "name": "DELETE /api/seller/delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/seller/delete"
+      }
+    },
+    {
+      "name": "POST /api/user/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/user/create"
+      }
+    },
+    {
+      "name": "POST /api/user/sendOtp",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/user/sendOtp"
+      }
+    },
+    {
+      "name": "POST /api/user/verifyOtpLogin",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/user/verifyOtpLogin"
+      }
+    },
+    {
+      "name": "POST /api/user/login",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/user/login"
+      }
+    },
+    {
+      "name": "GET /api/user/get",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/user/get"
+      }
+    },
+    {
+      "name": "GET /api/user/getUserById",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/user/getUserById"
+      }
+    },
+    {
+      "name": "DELETE /api/user/delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/user/delete"
+      }
+    },
+    {
+      "name": "POST /api/wallet/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/wallet/create"
+      }
+    },
+    {
+      "name": "POST /api/wallet/update",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/wallet/update"
+      }
+    },
+    {
+      "name": "GET /api/wallet/get",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/wallet/get"
+      }
+    }
+  ]
+}

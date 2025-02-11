@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">Loading...</div>
+
+    <script>
+        fetch("API_DOCS.md")
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById("content").innerHTML = marked.parse(text);
+            })
+            .catch(error => {
+                document.getElementById("content").innerHTML = '<p>Error loading documentation.</p>';
+                console.error("Error loading API_DOCS.md:", error);
+            });
+    </script>
+</body>
+</html>

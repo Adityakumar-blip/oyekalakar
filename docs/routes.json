@@ -1,0 +1,217 @@
+[
+  {
+    "method": "POST",
+    "path": "/add",
+    "file": "addressRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/edit",
+    "file": "addressRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/verifyPincode",
+    "file": "addressRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/signup",
+    "file": "adminRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/login",
+    "file": "adminRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/forgotPassword",
+    "file": "adminRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/resetPassword",
+    "file": "adminRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "artistRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/login",
+    "file": "artistRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/add",
+    "file": "cartRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getItem",
+    "file": "cartRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/updateCart",
+    "file": "cartRoutes.js"
+  },
+  {
+    "method": "DELETE",
+    "path": "/remove",
+    "file": "cartRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "couponRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getAllCoupons",
+    "file": "couponRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getById",
+    "file": "couponRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/update",
+    "file": "couponRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "",
+    "file": "index.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "orderRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/get",
+    "file": "orderRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/addReview",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/get",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getById",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getTopProducts",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getProductAnalytics",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/updateProduct",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "DELETE",
+    "path": "/delete",
+    "file": "productRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/get",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/login",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getUserById",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "PUT",
+    "path": "/update",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "DELETE",
+    "path": "/delete",
+    "file": "sellerRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/sendOtp",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/verifyOtpLogin",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/login",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/get",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getUserById",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "DELETE",
+    "path": "/delete",
+    "file": "userRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "walletRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/update",
+    "file": "walletRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/get",
+    "file": "walletRoutes.js"
+  }
+]
