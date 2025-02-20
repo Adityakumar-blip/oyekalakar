@@ -1,7 +1,7 @@
 const ProductType = Object.freeze({
   BuyNow: "Buy Now",
   OrderNow: "Order Now",
-  BookNow: "BookNow",
+  BookNow: "Book Now",
 });
 
 module.exports = ProductType;

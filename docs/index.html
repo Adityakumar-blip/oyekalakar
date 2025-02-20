@@ -5,33 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            line-height: 1.6;
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e293b;
+            --accent-color: #e5efff;
+            --text-color: #334155;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --method-get: #22c55e;
+            --method-post: #3b82f6;
+            --method-put: #f59e0b;
+            --method-patch: #8b5cf6;
+            --method-delete: #ef4444;
         }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            background: var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            background: var(--card-bg);
+            padding: 1rem;
+            margin: 1rem 0;
+            
+        }
+
+        code {
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: var(--accent-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .method-get { background-color: var(--method-get); }
+        .method-post { background-color: var(--method-post); }
+        .method-put { background-color: var(--method-put); }
+        .method-patch { background-color: var(--method-patch); }
+        .method-delete { background-color: var(--method-delete); }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .error {
+            padding: 1rem;
+            background: #fee2e2;
+            color: #dc2626;
+            border-radius: var(--border-radius);
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div id="content">Loading...</div>
+    <div class="container">
+        <div id="content" class="loading">Loading documentation...</div>
+    </div>
 
     <script>
+        marked.setOptions({
+            highlight: function(code, lang) {
+                return code;
+            }
+        });
+
         fetch("API_DOCS.md")
             .then(response => response.text())
             .then(text => {
                 document.getElementById("content").innerHTML = marked.parse(text);
+                
+                document.querySelectorAll("strong").forEach(tag => {
+                    const method = tag.textContent.trim().toUpperCase();
+                    if (["GET", "POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+                        tag.classList.add("method", `method-${method.toLowerCase()}`);
+                    }
+                });
             })
             .catch(error => {
-                document.getElementById("content").innerHTML = '<p>Error loading documentation.</p>';
+                document.getElementById("content").innerHTML = '<div class="error">Error loading documentation.</div>';
                 console.error("Error loading API_DOCS.md:", error);
             });
     </script>

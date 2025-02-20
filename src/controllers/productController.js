@@ -1,21 +1,74 @@
+const {
+  CustomizationType,
+  CustomizationOptions,
+} = require("../config/ProductEnum");
+const ProductType = require("../config/productTypeEnum");
 const Product = require("../models/productSchema");
 const { sendSuccess, sendError } = require("../utils/responseService");
 
 // Create a new product
+// exports.createProduct = async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       description,
+//       price,
+//       stock,
+//       category,
+//       tags,
+//       isPersonalizable,
+//       personalizationOptions,
+//       productSeller,
+//     } = req.body;
+
+//     const images = req.files
+//       ? req.files.map((file) => ({
+//           url: file.path,
+//           public_id: "",
+//         }))
+//       : [];
+
+//     const product = new Product({
+//       name,
+//       description,
+//       price,
+//       stock,
+//       category,
+//       images,
+//       tags,
+//       isPersonalizable,
+//       personalizationOptions,
+//       productSeller,
+//       roles: req.user.roles,
+//     });
+
+//     await product.save();
+//     return sendSuccess(res, "Product created successfully", product, 201);
+//   } catch (error) {
+//     return sendError(res, "Failed to create product", error);
+//   }
+// };
+
 exports.createProduct = async (req, res) => {
   try {
     const {
       name,
       description,
-      price,
+      basePrice,
       stock,
       category,
       tags,
-      isPersonalizable,
-      personalizationOptions,
+      productType,
       productSeller,
+      customizationOptions, // Customization input
     } = req.body;
 
+    // Validate product type
+    if (!Object.values(ProductType).includes(productType)) {
+      return sendError(res, "Invalid product type", 400);
+    }
+
+    // Handle image uploads
     const images = req.files
       ? req.files.map((file) => ({
           url: file.path,
@@ -23,18 +76,72 @@ exports.createProduct = async (req, res) => {
         }))
       : [];
 
+    let finalCustomizations = [];
+
+    if (
+      productType === ProductType.OrderNow ||
+      productType === ProductType.BookNow
+    ) {
+      if (!customizationOptions || !Array.isArray(customizationOptions)) {
+        return sendError(
+          res,
+          "Customization options are required for 'Order Now' and 'Book Now'",
+          400
+        );
+      }
+
+      // Validate customization options
+      for (const customization of customizationOptions) {
+        if (!CustomizationType[customization.type.toUpperCase()]) {
+          return sendError(
+            res,
+            `Invalid customization type: ${customization.type}`,
+            400
+          );
+        }
+
+        let validOptions = [];
+
+        for (const option of customization.options) {
+          if (
+            !CustomizationOptions[customization.type.toUpperCase()].includes(
+              option.name
+            )
+          ) {
+            return sendError(
+              res,
+              `Invalid option '${option.name}' for customization type '${customization.type}'`,
+              400
+            );
+          }
+
+          validOptions.push({ name: option.name, price: option.price });
+        }
+
+        finalCustomizations.push({
+          type: customization.type,
+          options: validOptions,
+        });
+      }
+    }
+
+    // If product is "Buy Now", remove customizations
+    if (productType === ProductType.BuyNow) {
+      finalCustomizations = undefined;
+    }
+
     const product = new Product({
       name,
       description,
-      price,
+      basePrice,
       stock,
       category,
       images,
       tags,
-      isPersonalizable,
-      personalizationOptions,
+      productType,
       productSeller,
       roles: req.user.roles,
+      customizationOptions: finalCustomizations,
     });
 
     await product.save();

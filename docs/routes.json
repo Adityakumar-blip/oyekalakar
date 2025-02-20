@@ -67,6 +67,26 @@
   {
     "method": "POST",
     "path": "/create",
+    "file": "contestRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getAllContests",
+    "file": "contestRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "/getContestById",
+    "file": "contestRoutes.js"
+  },
+  {
+    "method": "PATCH",
+    "path": "/updateContest",
+    "file": "contestRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
     "file": "couponRoutes.js"
   },
   {
@@ -83,6 +103,11 @@
     "method": "PATCH",
     "path": "/update",
     "file": "couponRoutes.js"
+  },
+  {
+    "method": "GET",
+    "path": "",
+    "file": "index.js"
   },
   {
     "method": "GET",
@@ -213,5 +238,10 @@
     "method": "GET",
     "path": "/get",
     "file": "walletRoutes.js"
+  },
+  {
+    "method": "POST",
+    "path": "/create",
+    "file": "workshopRoutes.js"
   }
 ]

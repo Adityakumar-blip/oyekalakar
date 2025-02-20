@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "API Documentation",
+    "name": "oyekalakar API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -96,6 +96,34 @@
       }
     },
     {
+      "name": "POST /api/contest/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/contest/create"
+      }
+    },
+    {
+      "name": "GET /api/contest/getAllContests",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/contest/getAllContests"
+      }
+    },
+    {
+      "name": "GET /api/contest/getContestById",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/contest/getContestById"
+      }
+    },
+    {
+      "name": "PATCH /api/contest/updateContest",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/contest/updateContest"
+      }
+    },
+    {
       "name": "POST /api/coupon/create",
       "request": {
         "method": "POST",
@@ -121,6 +149,13 @@
       "request": {
         "method": "PATCH",
         "url": "{{baseUrl}}/api/coupon/update"
+      }
+    },
+    {
+      "name": "GET /api/index.js",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/index.js"
       }
     },
     {
@@ -303,6 +338,13 @@
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/wallet/get"
+      }
+    },
+    {
+      "name": "POST /api/workshop/create",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/workshop/create"
       }
     }
   ]

@@ -17,5 +17,7 @@ router.use("/wallet", require("./walletRoutes.js"));
 router.use("/wishlist", require("./wishlistRoutes.js"));
 router.use("/address", require("./addressRoutes.js"));
 router.use("/coupon", require("./couponRoutes.js"));
+router.use("/workshop", require("./workshopRoutes.js"));
+router.use("/contest", require("./contestRoutes.js"));
 
 module.exports = router;

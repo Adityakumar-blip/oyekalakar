@@ -1,4 +1,4 @@
-# API Documentation
+# API Documentation for oyekalakar
 
 ## Address Module
 
@@ -25,16 +25,19 @@
 * **PATCH** - `/api/cart/updateCart`
 * **POST** - `/api/cart/add`
 
+## Contest Module
+
+* **GET** - `/api/contest/getAllContests`
+* **GET** - `/api/contest/getContestById`
+* **PATCH** - `/api/contest/updateContest`
+* **POST** - `/api/contest/create`
+
 ## Coupon Module
 
 * **GET** - `/api/coupon/getAllCoupons`
 * **GET** - `/api/coupon/getById`
 * **PATCH** - `/api/coupon/update`
 * **POST** - `/api/coupon/create`
-
-## Index.js Module
-
-* **GET** - `/api/index.js`
 
 ## Order Module
 
@@ -75,4 +78,8 @@
 * **GET** - `/api/wallet/get`
 * **POST** - `/api/wallet/create`
 * **POST** - `/api/wallet/update`
+
+## Workshop Module
+
+* **POST** - `/api/workshop/create`
 
